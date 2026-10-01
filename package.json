@@ -1,0 +1,56 @@
+{
+	"name": "n8n-nodes-mailinapp",
+	"version": "0.1.0",
+	"description": "MailInApp nodes for n8n: contacts, deals, journeys and transactional email, plus a trigger for MailInApp webhook events.",
+	"license": "MIT",
+	"homepage": "https://mailinapp.com",
+	"keywords": [
+		"n8n-community-node-package",
+		"mailinapp",
+		"email",
+		"interactive email",
+		"webhooks"
+	],
+	"author": {
+		"name": "MailInApp",
+		"email": "support@mailinapp.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Digitload/n8n-nodes-mailinapp.git"
+	},
+	"scripts": {
+		"build": "n8n-node build",
+		"build:watch": "tsc --watch",
+		"dev": "n8n-node dev",
+		"lint": "n8n-node lint",
+		"lint:fix": "n8n-node lint --fix",
+		"test": "n8n-node build && node --test 'test/**/*.test.js'",
+		"release": "n8n-node release",
+		"prepublishOnly": "n8n-node prerelease"
+	},
+	"files": [
+		"dist"
+	],
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"strict": true,
+		"credentials": [
+			"dist/credentials/MailInAppApi.credentials.js"
+		],
+		"nodes": [
+			"dist/nodes/MailInApp/MailInApp.node.js",
+			"dist/nodes/MailInAppTrigger/MailInAppTrigger.node.js"
+		]
+	},
+	"devDependencies": {
+		"@n8n/node-cli": "0.50.4",
+		"eslint": "9.32.0",
+		"prettier": "3.6.2",
+		"release-it": "^19.0.4",
+		"typescript": "5.9.2"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	}
+}
