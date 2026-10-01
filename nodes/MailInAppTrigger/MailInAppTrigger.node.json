@@ -2,7 +2,7 @@
 	"node": "n8n-nodes-mailinapp.mailInAppTrigger",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
-	"categories": ["Marketing", "Communication", "Sales"],
+	"categories": ["Marketing & Content", "Communication", "Sales"],
 	"resources": {
 		"credentialDocumentation": [
 			{

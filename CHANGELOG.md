@@ -1,6 +1,11 @@
 # Changelog
 
-## 0.1.0 (unreleased)
+## 0.1.1
+
+- Node categories use n8n's current names ("Marketing & Content" instead of
+  "Marketing"). This fixes the verification pre-check.
+
+## 0.1.0
 
 - First version. `MailInApp` node: contacts (create or update, get), contacts
   lists, deals (create, update), transactional email, journeys (enroll, get

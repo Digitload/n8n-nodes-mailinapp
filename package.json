@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-mailinapp",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "MailInApp nodes for n8n: contacts, deals, journeys and transactional email, plus a trigger for MailInApp webhook events.",
 	"license": "MIT",
 	"homepage": "https://mailinapp.com",
@@ -25,6 +25,7 @@
 		"dev": "n8n-node dev",
 		"lint": "n8n-node lint",
 		"lint:fix": "n8n-node lint --fix",
+		"scan": "n8n-node build && npm --prefix scripts/scan ci --ignore-scripts --no-audit --no-fund && node scripts/scan/scan.mjs",
 		"test": "n8n-node build && node --test 'test/**/*.test.js'",
 		"release": "n8n-node release",
 		"prepublishOnly": "n8n-node prerelease"

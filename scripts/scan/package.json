@@ -1,0 +1,9 @@
+{
+	"name": "n8n-nodes-mailinapp-scan",
+	"private": true,
+	"description": "Isolated install of n8n's verification scanner for `npm run scan`. Not part of the package.",
+	"type": "module",
+	"dependencies": {
+		"@n8n/scan-community-package": "0.38.0"
+	}
+}

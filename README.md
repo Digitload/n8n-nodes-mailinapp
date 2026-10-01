@@ -116,7 +116,8 @@ inside. It's a separate package with its own lockfile, and the Next.js build,
 cd integrations/n8n-nodes-mailinapp
 npm install --ignore-scripts   # skips isolated-vm's native build (needs Node 24) in the dev-only n8n CLI
 npm test                       # builds, then node:test against fake n8n contexts
-npm run lint                   # n8n's community-node rules, the ones n8n Cloud verification uses
+npm run lint                   # n8n's community-node rules, as bundled with @n8n/node-cli
+npm run scan                   # n8n's verification pre-check (@n8n/scan-community-package) on this checkout
 npm run dev                    # a local n8n on :5678 with these nodes loaded
 ```
 
@@ -147,8 +148,9 @@ own public repository, which `package.json`'s `repository` already names:
 2. **Set up npm publishing.** Claim `n8n-nodes-mailinapp` on npm under the
    MailInApp account, then add the repo as a Trusted Publisher
    (`publish.yml`, no environment). The workflow's header explains how.
-3. **Release.** Bump `version` and `CHANGELOG.md` here and copy the change to
-   the mirror. Tag it there (`0.1.0`, no `v` prefix) and push the tag. The
+3. **Release.** Bump `version` and `CHANGELOG.md` here, run `npm run scan`
+   (the Creator Portal's pre-check can use newer rules than `npm run lint`),
+   and copy the change to the mirror. Tag it there (`0.1.0`, no `v` prefix) and push the tag. The
    workflow lints, builds and publishes with provenance.
 4. **Submit for verification** in the
    [n8n Creator Portal](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/).
