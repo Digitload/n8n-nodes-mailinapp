@@ -75,4 +75,14 @@ export const EVENTS: MailInAppEvent[] = [
 		name: 'Journey Completed',
 		description: 'A contact reached the end of a journey',
 	},
+	{
+		type: 'experiment.decided',
+		name: 'Experiment Decided',
+		description: 'Someone recorded the decision on an A/B experiment',
+	},
+	{
+		type: 'experiment.completed',
+		name: 'Experiment Results Ready',
+		description: "An A/B experiment's final analysis is in, after its observation window",
+	},
 ];

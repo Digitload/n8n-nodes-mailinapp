@@ -60,6 +60,8 @@ can see the subscriptions under **Dashboard → Developers → Webhooks**.
 | Deal Created / Deal Stage Changed | A deal is created, or moves stage (won and lost included). |
 | Purchase Completed | A recipient buys from an email. |
 | Journey Completed | A contact reaches the end of a journey. |
+| Experiment Decided | Someone records the decision on an A/B experiment: a winner, no difference or inconclusive. For a journey experiment the winner is a path. |
+| Experiment Results Ready | An A/B experiment's final analysis is in, after its observation window ends. |
 
 Each run gets the event as MailInApp sent it:
 

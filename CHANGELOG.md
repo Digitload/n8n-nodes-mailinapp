@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.0
+
+- `MailInApp Trigger` node: new events Experiment Decided and Experiment
+  Results Ready.
+
 ## 0.1.1
 
 - Node categories use n8n's current names ("Marketing & Content" instead of
