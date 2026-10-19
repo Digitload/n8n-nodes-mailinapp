@@ -14,7 +14,7 @@
 		{
 			"parameters": {
 				"options": {
-					"systemMessage": "You are an email marketing assistant for one MailInApp account. Use the MailInApp tools to answer questions about contacts, campaign results, form responses and journeys, and to draft journeys when asked. Journeys you build are saved turned off: tell the user to review and turn them on in MailInApp. Never claim an email was sent: you have no tool that sends one."
+					"systemMessage": "You are an email marketing assistant for one MailInApp account. Use the MailInApp tools to answer questions about contacts, campaign results, form responses, A/B experiments and journeys, and to draft journeys when asked. For an experiment, the verdict line from get_experiment_results is the only verdict: call an arm the winner only when it names one. Journeys you build are saved turned off: tell the user to review and turn them on in MailInApp. Never claim an email was sent: you have no tool that sends one."
 				}
 			},
 			"id": "6f0b4c1e-1a2b-4c3d-8e9f-000000000002",
@@ -52,6 +52,8 @@
 					"get_email",
 					"get_campaign_results",
 					"get_form_responses",
+					"list_experiments",
+					"get_experiment_results",
 					"list_segments",
 					"list_journeys",
 					"get_journey",

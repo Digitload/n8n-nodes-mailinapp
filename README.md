@@ -34,8 +34,9 @@ created.
 | --- | --- |
 | Contact | **Create or Update**: add an address to a contacts list, or update its fields. MailInApp verifies the address as it saves it, and never marks a contact as consented. **Get**: the address's row in every list, or in one. |
 | Contacts List | **Get Many**: lists with their fields and row counts. |
-| Deal | **Create** on a contact (by email). Set an **Idempotency Key** (e.g. an order ID) so a retried run doesn't create a second deal. **Update**: move to another stage, won and lost included, or change the title, value or currency. |
-| Email | **Send Transactional**: your own subject and HTML/text, or a studio project (interactive blocks included) with merge data. A `failed` send is an error. A `suppressed` one (the address bounced or is invalid) is a normal result you can branch on. |
+| Deal | **Create** on a contact (by email). Set an **Idempotency Key** (e.g. an order ID) so a retried run doesn't create a second deal. **Update** (pick the deal from a list, or map its ID): move to another stage, won and lost included, or change the title, value or currency. |
+| Email | **Send Transactional**: your own subject and HTML/text, or a studio project (interactive blocks included, picked from a list) with merge data. A `failed` send is an error. A `suppressed` one (the address bounced or is invalid) is a normal result you can branch on. |
+| Experiment | **Get** one A/B experiment: its status, arms, the analysis engine's latest result and any recorded decision. Turn on **Include Full Report** for every metric with its interval and the data-quality checks. **Get Many**, filtered by status and kind (send or journey). Read-only: locking, launching and deciding stay in MailInApp. |
 | Journey | **Enroll Contact** in a journey whose trigger is "API". **Get Many**. |
 | Pipeline | **Get Many**: deal pipelines and their stages. |
 

@@ -59,6 +59,7 @@ export const resourceProperty: INodeProperties = {
 		{ name: 'Contacts List', value: 'list' },
 		{ name: 'Deal', value: 'deal' },
 		{ name: 'Email', value: 'email' },
+		{ name: 'Experiment', value: 'experiment' },
 		{ name: 'Journey', value: 'journey' },
 		{ name: 'Pipeline', value: 'pipeline' },
 	],
@@ -258,13 +259,15 @@ const dealFields: INodeProperties[] = [
 		],
 	},
 	{
-		displayName: 'Deal ID',
+		displayName: 'Deal Name or ID',
 		name: 'dealId',
-		type: 'string',
+		type: 'options',
+		typeOptions: { loadOptionsMethod: 'getDeals' },
 		required: true,
 		displayOptions: show('deal', ['update']),
 		default: '',
-		description: 'From a Deal Created or Deal Stage Changed trigger, or a Create Deal step',
+		description:
+			'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>',
 	},
 	{
 		displayName: 'Update Fields',
@@ -364,13 +367,15 @@ const emailFields: INodeProperties[] = [
 		default: 'custom',
 	},
 	{
-		displayName: 'Project ID',
+		displayName: 'Project Name or ID',
 		name: 'projectId',
-		type: 'string',
+		type: 'options',
+		typeOptions: { loadOptionsMethod: 'getProjects' },
 		required: true,
 		displayOptions: { show: { resource: ['email'], operation: ['send'], content: ['project'] } },
 		default: '',
-		description: 'Copy it from the studio URL: /studio/&lt;project ID&gt;',
+		description:
+			'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>',
 	},
 	{
 		displayName: 'Subject',
@@ -460,6 +465,92 @@ const emailFields: INodeProperties[] = [
 	},
 ];
 
+// ── Experiment ─────────────────────────────────────────────────────────────
+
+const experimentOperations: INodeProperties = {
+	displayName: 'Operation',
+	name: 'operation',
+	type: 'options',
+	noDataExpression: true,
+	displayOptions: { show: { resource: ['experiment'] } },
+	options: [
+		{
+			name: 'Get',
+			value: 'get',
+			description: "Get an A/B experiment with the analysis engine's latest result",
+			action: 'Get an experiment',
+		},
+		{
+			name: 'Get Many',
+			value: 'getAll',
+			description: 'List your A/B experiments, newest first',
+			action: 'Get many experiments',
+		},
+	],
+	default: 'get',
+};
+
+const experimentFields: INodeProperties[] = [
+	{
+		displayName: 'Experiment Name or ID',
+		name: 'experimentId',
+		type: 'options',
+		typeOptions: { loadOptionsMethod: 'getExperiments' },
+		required: true,
+		displayOptions: show('experiment', ['get']),
+		default: '',
+		description:
+			'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>',
+	},
+	{
+		displayName: 'Include Full Report',
+		name: 'includeReport',
+		type: 'boolean',
+		displayOptions: show('experiment', ['get']),
+		default: false,
+		description:
+			"Whether to add the experiment's report: every metric with its interval, the data-quality checks and delivery, as in the dashboard's JSON export",
+	},
+	{
+		displayName: 'Filters',
+		name: 'filters',
+		type: 'collection',
+		placeholder: 'Add Filter',
+		displayOptions: show('experiment', ['getAll']),
+		default: {},
+		options: [
+			{
+				displayName: 'Kind',
+				name: 'kind',
+				type: 'options',
+				options: [
+					{ name: 'Journey Experiment', value: 'journey' },
+					{ name: 'Send Experiment', value: 'send' },
+				],
+				default: 'send',
+			},
+			{
+				displayName: 'Status',
+				name: 'status',
+				type: 'options',
+				options: [
+					{ name: 'Analyzing', value: 'analyzing' },
+					{ name: 'Cancelled', value: 'cancelled' },
+					{ name: 'Closed', value: 'closed' },
+					{ name: 'Decided', value: 'decided' },
+					{ name: 'Draft', value: 'draft' },
+					{ name: 'Inconclusive', value: 'inconclusive' },
+					{ name: 'Observing', value: 'observing' },
+					{ name: 'Scheduled', value: 'scheduled' },
+					{ name: 'Sending', value: 'sending' },
+				],
+				default: 'decided',
+			},
+		],
+	},
+	...returnAllAndLimit('experiment'),
+];
+
 // ── Journey ────────────────────────────────────────────────────────────────
 
 const journeyOperations: INodeProperties = {
@@ -539,12 +630,14 @@ export const properties: INodeProperties[] = [
 	listOperations,
 	dealOperations,
 	emailOperations,
+	experimentOperations,
 	journeyOperations,
 	pipelineOperations,
 	...contactFields,
 	...returnAllAndLimit('list'),
 	...dealFields,
 	...emailFields,
+	...experimentFields,
 	...journeyFields,
 	...returnAllAndLimit('pipeline'),
 ];

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0
+
+- `MailInApp` node: new Experiment resource. **Get** reads one A/B
+  experiment (the analysis engine's latest result and any recorded
+  decision), optionally with its full report. **Get Many** lists them,
+  filtered by status and kind. Read-only: locking, launching and deciding
+  stay in MailInApp.
+- Deal **Update** picks the deal from a dropdown, and Email **Send
+  Transactional** from a studio project picks the project from one (both
+  still take a mapped ID).
+
 ## 0.2.0
 
 - `MailInApp Trigger` node: new events Experiment Decided and Experiment

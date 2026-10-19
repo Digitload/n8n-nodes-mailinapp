@@ -170,6 +170,27 @@ const journeyGetAll: Operation = async function (i) {
 	return limitResults(this, i, (body.journeys as IDataObject[]) ?? []);
 };
 
+// One A/B experiment: the engine's latest result and any recorded decision,
+// plus, when asked, its full report (the dashboard's JSON export). Read-only:
+// locking, launching and deciding stay in the dashboard.
+const experimentGet: Operation = async function (i) {
+	const id = encodeURIComponent(this.getNodeParameter('experimentId', i) as string);
+	if (this.getNodeParameter('includeReport', i, false) as boolean) {
+		const { body } = await apiRequest.call(this, 'GET', `/api/v1/experiments/${id}/results`);
+		return [{ ...(body.experiment as IDataObject), report: body.report }];
+	}
+	const { body } = await apiRequest.call(this, 'GET', `/api/v1/experiments/${id}`);
+	return [body.experiment as IDataObject];
+};
+
+const experimentGetAll: Operation = async function (i) {
+	const filters = this.getNodeParameter('filters', i, {}) as IDataObject;
+	const { body } = await apiRequest.call(this, 'GET', '/api/v1/experiments', {
+		qs: compact({ status: filters.status, kind: filters.kind }),
+	});
+	return limitResults(this, i, (body.experiments as IDataObject[]) ?? []);
+};
+
 const pipelineGetAll: Operation = async function (i) {
 	const { body } = await apiRequest.call(this, 'GET', '/api/v1/pipelines');
 	return limitResults(this, i, (body.pipelines as IDataObject[]) ?? []);
@@ -180,6 +201,7 @@ export const operations: Record<string, Record<string, Operation>> = {
 	list: { getAll: listGetAll },
 	deal: { create: dealCreate, update: dealUpdate },
 	email: { send: emailSend },
+	experiment: { get: experimentGet, getAll: experimentGetAll },
 	journey: { enroll: journeyEnroll, getAll: journeyGetAll },
 	pipeline: { getAll: pipelineGetAll },
 };

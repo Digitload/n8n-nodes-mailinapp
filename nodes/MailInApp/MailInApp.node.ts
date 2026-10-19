@@ -14,7 +14,8 @@ import { properties } from './descriptions';
 
 // The MailInApp action node (LEAD_FLYWHEEL_PLAN.md 10.4): the same actions as
 // the Zapier app (integrations/zapier, 10.3) over the public API, plus the
-// read operations an AI agent needs to pick ids (lists, journeys, pipelines).
+// read operations an AI agent needs to pick ids (lists, journeys, pipelines)
+// and, from AB_TESTING_PLAN.md 9.2, read-only A/B experiments.
 // Programmatic rather than declarative because the send operation derives the
 // missing body, turns an HTTP 200 "failed" into an error, and a deal update
 // must refuse an empty patch before calling.
@@ -34,7 +35,8 @@ export class MailInApp implements INodeType {
 		group: ['output'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Manage MailInApp contacts, deals and journeys, and send transactional email',
+		description:
+			'Manage MailInApp contacts, deals and journeys, read A/B experiments, and send transactional email',
 		defaults: { name: 'MailInApp' },
 		usableAsTool: true,
 		inputs: [NodeConnectionTypes.Main],
@@ -70,6 +72,32 @@ export class MailInApp implements INodeType {
 				return ((body.journeys as IDataObject[]) ?? []).map((journey) => ({
 					name: journey.enabled ? (journey.name as string) : `${journey.name} (off)`,
 					value: journey.id as string,
+				}));
+			},
+
+			// Deals, most recently moved first, labelled "Title · contact (stage)".
+			async getDeals(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+				const { body } = await apiRequest.call(this, 'GET', '/api/v1/deals', { qs: { limit: 500 } });
+				return ((body.deals as IDataObject[]) ?? []).map((deal) => ({
+					name: `${deal.title} · ${deal.email}${deal.stage ? ` (${deal.stage})` : ''}`,
+					value: deal.id as string,
+				}));
+			},
+
+			// Studio email projects, most recently edited first.
+			async getProjects(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+				const { body } = await apiRequest.call(this, 'GET', '/api/v1/projects');
+				return ((body.projects as IDataObject[]) ?? []).map((project) => ({
+					name: (project.name as string) || (project.id as string),
+					value: project.id as string,
+				}));
+			},
+
+			async getExperiments(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+				const { body } = await apiRequest.call(this, 'GET', '/api/v1/experiments');
+				return ((body.experiments as IDataObject[]) ?? []).map((experiment) => ({
+					name: `${experiment.name} (${experiment.status})`,
+					value: experiment.id as string,
 				}));
 			},
 
