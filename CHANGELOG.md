@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0
+
+- `MailInApp Trigger` node: new event Response Completed, sent once a
+  recipient has answered every block an email counts.
+
 ## 0.3.0
 
 - `MailInApp` node: new Experiment resource. **Get** reads one A/B

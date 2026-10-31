@@ -85,4 +85,9 @@ export const EVENTS: MailInAppEvent[] = [
 		name: 'Experiment Results Ready',
 		description: "An A/B experiment's final analysis is in, after its observation window",
 	},
+	{
+		type: 'response.completed',
+		name: 'Response Completed',
+		description: 'A recipient answered every block an email counts, once per recipient and email',
+	},
 ];
