@@ -178,6 +178,13 @@ const dealOperations: INodeProperties = {
 				'Move a deal to another stage (won and lost included), or change its title or value',
 			action: 'Update a deal',
 		},
+		{
+			name: 'Get Many',
+			value: 'getAll',
+			description:
+				'List your deals, newest move first. Filter by contact email, status or pipeline, e.g. to find a contact\'s deal and then update it.',
+			action: 'Get many deals',
+		},
 	],
 	default: 'create',
 };
@@ -321,6 +328,45 @@ const dealFields: INodeProperties[] = [
 			},
 		],
 	},
+	{
+		displayName: 'Filters',
+		name: 'filters',
+		type: 'collection',
+		placeholder: 'Add Filter',
+		displayOptions: show('deal', ['getAll']),
+		default: {},
+		options: [
+			{
+				displayName: 'Contact Email',
+				name: 'email',
+				type: 'string',
+				placeholder: 'name@email.com',
+				default: '',
+				description: 'Only the deals about this contact, in any contacts list',
+			},
+			{
+				displayName: 'Pipeline Name or ID',
+				name: 'pipelineId',
+				type: 'options',
+				typeOptions: { loadOptionsMethod: 'getPipelines' },
+				default: '',
+				description:
+					'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>',
+			},
+			{
+				displayName: 'Status',
+				name: 'status',
+				type: 'options',
+				options: [
+					{ name: 'Lost', value: 'lost' },
+					{ name: 'Open', value: 'open' },
+					{ name: 'Won', value: 'won' },
+				],
+				default: 'open',
+			},
+		],
+	},
+	...returnAllAndLimit('deal'),
 ];
 
 // ── Email ──────────────────────────────────────────────────────────────────

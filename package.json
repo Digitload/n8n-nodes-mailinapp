@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-mailinapp",
-	"version": "0.4.0",
+	"version": "0.5.0",
 	"description": "MailInApp nodes for n8n: contacts, deals, journeys, A/B experiment results and transactional email, plus a trigger for MailInApp webhook events.",
 	"license": "MIT",
 	"homepage": "https://mailinapp.com",

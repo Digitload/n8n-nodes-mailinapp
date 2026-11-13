@@ -101,6 +101,23 @@ const dealUpdate: Operation = async function (i) {
 	return [{ ...(response.body.deal as IDataObject), moved: response.body.moved }];
 };
 
+// Most recently moved first. The server reads a contact's deals through the
+// profile index when an email is given, so an address finds its deal in any
+// list. The limit is sent so a "Return All" asks for the API's maximum.
+const dealGetAll: Operation = async function (i) {
+	const filters = this.getNodeParameter('filters', i, {}) as IDataObject;
+	const all = this.getNodeParameter('returnAll', i) as boolean;
+	const { body } = await apiRequest.call(this, 'GET', '/api/v1/deals', {
+		qs: compact({
+			email: filters.email,
+			status: filters.status,
+			pipelineId: filters.pipelineId,
+			limit: all ? 500 : (this.getNodeParameter('limit', i) as number),
+		}),
+	});
+	return limitResults(this, i, (body.deals as IDataObject[]) ?? []);
+};
+
 // Always type "transactional". Marketing sends are left out on purpose: they
 // need consent a workflow can't prove. A "failed" outcome comes back as HTTP
 // 200 and is raised here so the execution shows it; "suppressed" (the
@@ -199,7 +216,7 @@ const pipelineGetAll: Operation = async function (i) {
 export const operations: Record<string, Record<string, Operation>> = {
 	contact: { upsert: contactUpsert, get: contactGet },
 	list: { getAll: listGetAll },
-	deal: { create: dealCreate, update: dealUpdate },
+	deal: { create: dealCreate, update: dealUpdate, getAll: dealGetAll },
 	email: { send: emailSend },
 	experiment: { get: experimentGet, getAll: experimentGetAll },
 	journey: { enroll: journeyEnroll, getAll: journeyGetAll },

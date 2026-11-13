@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0
+
+- `MailInApp` node: Deal **Get Many**. Lists your deals, most recently moved
+  first, and filters by contact email, status (open, won or lost) or
+  pipeline. Use it to find a contact's deal from an address a trigger gives
+  you, then pass its ID to Deal **Update** (the same as Zapier's Find Deal).
+
 ## 0.4.0
 
 - `MailInApp Trigger` node: new event Response Completed, sent once a
